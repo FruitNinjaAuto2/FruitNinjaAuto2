@@ -4,36 +4,34 @@ import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.view.accessibility.AccessibilityEvent
-import android.os.Handler
-import android.os.Looper
 
 class FruitAccessibilityService : AccessibilityService() {
 
-    private val handler = Handler(Looper.getMainLooper())
     private var running = false
 
     override fun onServiceConnected() {
         super.onServiceConnected()
 
-        running = true
-        startCutting()
+        // الخدمة تشتغل، لكن لا تبدأ السحب تلقائيًا
+        running = false
     }
 
     private fun startCutting() {
-        if (!running) return
+        if (running) return
 
-        // حركة تجريبية من اليسار إلى اليمين
+        running = true
+
         swipe(150f, 900f, 930f, 500f)
 
-        handler.postDelayed({
+        android.os.Handler(mainLooper).postDelayed({
             if (running) {
                 swipe(150f, 650f, 930f, 300f)
             }
         }, 250)
 
-        handler.postDelayed({
+        android.os.Handler(mainLooper).postDelayed({
             if (running) {
-                startCutting()
+                running = false
             }
         }, 600)
     }
@@ -62,11 +60,10 @@ class FruitAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        // لاحقاً نضيف هنا منطق اكتشاف الفواكه
+        // لا يوجد تشغيل تلقائي حاليًا
     }
 
     override fun onInterrupt() {
         running = false
-        handler.removeCallbacksAndMessages(null)
     }
 }
