@@ -47,7 +47,7 @@ class MainActivity : Activity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQ_CAPTURE && resultCode == RESULT_OK && data != null) {
-            CaptureService.start(this, resultCode, data)
+            CaptureService.startCapture(this, resultCode, data)
         }
     }
 }
