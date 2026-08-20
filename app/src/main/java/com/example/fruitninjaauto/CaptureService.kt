@@ -1,8 +1,10 @@
 package com.example.fruitninjaauto
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjection
+import android.media.projection.MediaProjectionManager
 import android.os.IBinder
 
 class CaptureService : Service() {
@@ -10,17 +12,16 @@ class CaptureService : Service() {
     companion object {
         var mediaProjection: MediaProjection? = null
 
-        fun start(
-            service: CaptureService,
+        fun startCapture(
+            context: Context,
             resultCode: Int,
             data: Intent
         ) {
             val manager =
-                service.getSystemService(MEDIA_PROJECTION_SERVICE)
-                        as android.media.projection.MediaProjectionManager
+                context.getSystemService(Context.MEDIA_PROJECTION_SERVICE)
+                        as MediaProjectionManager
 
-            mediaProjection =
-                manager.getMediaProjection(resultCode, data)
+            mediaProjection = manager.getMediaProjection(resultCode, data)
         }
     }
 
